@@ -1,0 +1,242 @@
+diff --git a/bin/alerts.cjs b/bin/alerts.cjs
+index 79e79e0..bba329f 100755
+--- a/bin/alerts.cjs
++++ b/bin/alerts.cjs
+@@ -73,7 +73,9 @@ if (jsonOutput) {
+     alerts.forEach((al, idx) => {
+       const dt = al.alert_data || {};
+       console.log(`\n[ALERT #${idx + 1}] Rule: ${dt.rule_id || 'ALERT'} | Severity: ${dt.severity || 'HIGH'}`);
+-      console.log(`  Actor:     ${dt.actor || al.actor}`);
++      console.log(`  Identity:  ${dt.identity || dt.actor || al.actor}`);
++      console.log(`  Services:  ${Array.isArray(dt.services) ? dt.services.join(', ') : (dt.services || 'n/a')}`);
++      console.log(`  Event:     ${dt.event || al.action || 'n/a'}`);
+       console.log(`  Reason:    ${dt.reason || 'Security policy violation'}`);
+       console.log(`  Timestamp: ${al.timestamp} | Log Hash: sha256:${al.hash}`);
+     });
+diff --git a/lib/detector.cjs b/lib/detector.cjs
+index 02709c5..f3bacaf 100644
+--- a/lib/detector.cjs
++++ b/lib/detector.cjs
+@@ -442,6 +442,21 @@ class ExplainableDetector {
+       }
+     }
+ 
++    // Every alert must name the identity, the service(s) and the event.
++    const eventById = new Map(events.map(ev => [ev.event_id, ev]));
++    for (const a of alerts) {
++      const evs = (a.event_ids || []).map(id => eventById.get(id)).filter(Boolean);
++      if (a.identity === undefined) a.identity = a.actor;
++      if (a.services === undefined) {
++        a.services = Array.isArray(a.services_touched)
++          ? [...a.services_touched]
++          : [...new Set(evs.flatMap(ev => [ev.source_service, ev.target_service]).filter(Boolean))];
++      }
++      if (a.event === undefined) {
++        a.event = evs.map(ev => `${ev.action || 'event'}#${ev.event_id}`).join(', ') || (a.event_ids || []).join(', ');
++      }
++    }
++
+     return {
+       events_analyzed: events.length,
+       alerts,
+diff --git a/team_app.cjs b/team_app.cjs
+index 7c4e3c0..8b27863 100644
+--- a/team_app.cjs
++++ b/team_app.cjs
+@@ -160,6 +160,19 @@ function saveState(stateDir, state) {
+   durableWriteFile(storePath, Buffer.from(serialized, 'utf8'), 0o600);
+ }
+ 
++// Every alert must name the identity, the service(s) and the event.
++function emitAlert(tamperLog, alert, ctx = {}) {
++  const full = {
++    ...alert,
++    identity: alert.identity || alert.actor || 'unknown',
++    services: alert.services || ctx.services || ['track4-adapter'],
++    event: alert.event || ctx.event || 'unknown'
++  };
++  tamperLog.appendRecord('detector', 'alert', full);
++  process.stderr.write(`[SECURITY ALERT] ${full.rule_id} identity=${full.identity} services=${full.services.join(',')} event=${full.event} :: ${full.reason}\n`);
++  return full;
++}
++
+ // Live Detection & Automated Response
+ function checkLiveRulesAndRespond(state, actor, asset, op, request, stateDir, tamperLog) {
+   const now = Date.now();
+@@ -208,8 +221,7 @@ function checkLiveRulesAndRespond(state, actor, asset, op, request, stateDir, ta
+ 
+   if (alerts.length > 0) {
+     for (const a of alerts) {
+-      tamperLog.appendRecord('detector', 'alert', a);
+-      process.stderr.write(`[SECURITY ALERT] ${a.rule_id}: ${a.reason}\n`);
++      emitAlert(tamperLog, a, { services: asset ? [asset] : ['track4-adapter'], event: op });
+     }
+   }
+ }
+@@ -227,9 +239,8 @@ function recordDenialForActor(state, actor, stateDir, tamperLog) {
+       denial_count: list.length,
+       reason: `Actor ${actor} accumulated ${list.length} consecutive denials within 60s`
+     };
+-    tamperLog.appendRecord('detector', 'alert', alertData);
++    emitAlert(tamperLog, alertData, { event: 'repeated_denied_access' });
+     const isLockoutEnabled = process.env.TRACK4_LIVE_LOCKOUT === '1';
+-    process.stderr.write(`[SECURITY ALERT] RULE_REPEATED_DENIALS: Actor ${actor} accumulated ${list.length} consecutive denials${isLockoutEnabled ? ' (locked out for 30s)' : ' (alert only)'}\n`);
+     if (isLockoutEnabled) {
+       state.lockouts.set(actor, now + 30000); // 30s automated lockout response
+     }
+@@ -529,8 +540,7 @@ exports.dispatch = async function dispatch(request) {
+             actor,
+             reason: `Actor ${actor} submitted non-base64 or malformed public key`
+           };
+-          tamperLog.appendRecord('detector', 'alert', alertData);
+-          process.stderr.write(`[SECURITY ALERT] RULE_CORRUPTED_KEY: ${alertData.reason}\n`);
++          emitAlert(tamperLog, alertData, { services: [asset], event: 'protected_read' });
+           recordDenialForActor(state, actor, stateDir, tamperLog);
+           saveState(stateDir, state);
+           return { decision: 'deny' };
+@@ -544,8 +554,7 @@ exports.dispatch = async function dispatch(request) {
+             actor,
+             reason: `Actor ${actor} submitted invalid key length (${rawPk.length} != 1184)`
+           };
+-          tamperLog.appendRecord('detector', 'alert', alertData);
+-          process.stderr.write(`[SECURITY ALERT] RULE_CORRUPTED_KEY: ${alertData.reason}\n`);
++          emitAlert(tamperLog, alertData, { services: [asset], event: 'protected_read' });
+           recordDenialForActor(state, actor, stateDir, tamperLog);
+           saveState(stateDir, state);
+           return { decision: 'deny' };
+diff --git a/tests/alert_fields.test.cjs b/tests/alert_fields.test.cjs
+new file mode 100644
+index 0000000..56fabe0
+--- /dev/null
++++ b/tests/alert_fields.test.cjs
+@@ -0,0 +1,71 @@
++'use strict';
++
++// Every alert must name the identity, the service(s) and the event.
++const test = require('node:test');
++const assert = require('node:assert/strict');
++const path = require('node:path');
++const fs = require('node:fs');
++const os = require('node:os');
++const { spawnSync } = require('node:child_process');
++const { ExplainableDetector } = require('../lib/detector.cjs');
++
++const SERVICE_PATH = path.join(__dirname, '..', 'track4_service.cjs');
++
++function run(input, stateDir) {
++  return spawnSync(process.execPath, [SERVICE_PATH], {
++    input: JSON.stringify(input),
++    env: { ...process.env, TRACK4_STATE_DIR: stateDir },
++    encoding: 'utf8'
++  });
++}
++
++function assertNamed(alert) {
++  assert.ok(alert.identity && typeof alert.identity === 'string', `identity missing on ${alert.rule_id}`);
++  assert.ok(Array.isArray(alert.services) && alert.services.length > 0, `services missing on ${alert.rule_id}`);
++  assert.ok(alert.event && typeof alert.event === 'string', `event missing on ${alert.rule_id}`);
++}
++
++test('Detector alerts name identity, services and event', () => {
++  const detector = new ExplainableDetector({});
++  const res = detector.detect([{
++    event_id: 'evt-1',
++    event_time_utc: '2026-01-15T09:00:00.000Z',
++    received_time_utc: '2026-01-15T09:00:00.080Z',
++    source_clock_offset_ms: 0,
++    actor: 'mallory',
++    source_service: 'auth-gateway',
++    target_service: 'identity-core',
++    action: 'role_change',
++    role_before: 'viewer',
++    role_after: 'admin',
++    outcome: 'success',
++    approval_id: '',
++    session_id: 's1',
++    correlation_id: 'f1'
++  }]);
++  assert.ok(res.alerts.length >= 1, 'expected at least one alert');
++  res.alerts.forEach(assertNamed);
++  assert.equal(res.alerts[0].identity, 'mallory');
++  assert.ok(res.alerts[0].services.includes('identity-core'));
++});
++
++test('Adapter alerts in audit.log name identity, services and event', () => {
++  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'track4-alert-'));
++  const setup = run({
++    op: 'setup', owners: { asset1: 'maya' }, contents: { asset1: 'payload' },
++    disabled: [], key_material: 'k-' + Date.now()
++  }, stateDir);
++  assert.equal(setup.status, 0);
++  assert.equal(run({ op: 'revoke', actor: 'maya' }, stateDir).status, 0);
++  run({ op: 'read', actor: 'maya', asset: 'asset1', request_id: 'r-alert-1' }, stateDir);
++
++  const lines = fs.readFileSync(path.join(stateDir, 'audit.log'), 'utf8').split('\n').filter(Boolean);
++  const alerts = lines.map(l => JSON.parse(l))
++    .filter(r => r.type === 'record' && r.action === 'alert')
++    .map(r => r.details);
++  assert.ok(alerts.length >= 1, 'expected an alert for a read after revocation');
++  alerts.forEach(assertNamed);
++  assert.equal(alerts[0].identity, 'maya');
++  assert.ok(alerts[0].services.includes('asset1'));
++  assert.equal(alerts[0].event, 'read');
++});
+diff --git a/tests/revoke_restart.test.cjs b/tests/revoke_restart.test.cjs
+new file mode 100644
+index 0000000..8b25a13
+--- /dev/null
++++ b/tests/revoke_restart.test.cjs
+@@ -0,0 +1,53 @@
++'use strict';
++
++// "Rejected" must still mean rejected after a crash or a restart.
++const test = require('node:test');
++const assert = require('node:assert/strict');
++const path = require('node:path');
++const fs = require('node:fs');
++const os = require('node:os');
++const { spawnSync } = require('node:child_process');
++
++const SERVICE_PATH = path.join(__dirname, '..', 'track4_service.cjs');
++
++function run(input, stateDir, extraEnv = {}) {
++  return spawnSync(process.execPath, [SERVICE_PATH], {
++    input: JSON.stringify(input),
++    env: { ...process.env, TRACK4_STATE_DIR: stateDir, ...extraEnv },
++    encoding: 'utf8'
++  });
++}
++
++test('Revoked actor stays rejected after restart and after a crash mid-write', () => {
++  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'track4-restart-'));
++  const body = 'secret-' + Date.now();
++
++  assert.equal(run({
++    op: 'setup',
++    owners: { assetA: 'maya', assetB: 'alex' },
++    contents: { assetA: body, assetB: 'alex-data' },
++    disabled: [],
++    key_material: 'k-' + Date.now()
++  }, stateDir).status, 0);
++
++  // Allowed before revocation
++  let r = JSON.parse(run({ op: 'read', actor: 'maya', asset: 'assetA', request_id: 'pre-1' }, stateDir).stdout);
++  assert.equal(r.decision, 'allow');
++
++  // Revoke (each call below is a brand-new process = a restart)
++  assert.equal(run({ op: 'revoke', actor: 'maya' }, stateDir).status, 0);
++
++  r = JSON.parse(run({ op: 'read', actor: 'maya', asset: 'assetA', request_id: 'post-1' }, stateDir).stdout);
++  assert.equal(r.decision, 'deny');
++  assert.equal(r.body, undefined, 'revoked actor must not receive the body');
++
++  // A crash during a later revoke must not un-revoke anyone
++  run({ op: 'revoke', actor: 'someone-else' }, stateDir, { TRACK4_FAULT_HOOK: 'mid_revoke' });
++
++  r = JSON.parse(run({ op: 'read', actor: 'maya', asset: 'assetA', request_id: 'post-2' }, stateDir).stdout);
++  assert.equal(r.decision, 'deny', 'still denied after crash + restart');
++
++  // Peers are unaffected
++  r = JSON.parse(run({ op: 'read', actor: 'alex', asset: 'assetB', request_id: 'peer-1' }, stateDir).stdout);
++  assert.equal(r.decision, 'allow');
++});

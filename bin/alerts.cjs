@@ -73,7 +73,9 @@ if (jsonOutput) {
     alerts.forEach((al, idx) => {
       const dt = al.alert_data || {};
       console.log(`\n[ALERT #${idx + 1}] Rule: ${dt.rule_id || 'ALERT'} | Severity: ${dt.severity || 'HIGH'}`);
-      console.log(`  Actor:     ${dt.actor || al.actor}`);
+      console.log(`  Identity:  ${dt.identity || dt.actor || al.actor}`);
+      console.log(`  Services:  ${Array.isArray(dt.services) ? dt.services.join(', ') : (dt.services || 'n/a')}`);
+      console.log(`  Event:     ${dt.event || al.action || 'n/a'}`);
       console.log(`  Reason:    ${dt.reason || 'Security policy violation'}`);
       console.log(`  Timestamp: ${al.timestamp} | Log Hash: sha256:${al.hash}`);
     });

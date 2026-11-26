@@ -1,5 +1,10 @@
 // One JSON request per process. Team code owns all application behavior.
 'use strict';
+const [major, minor] = process.versions.node.split('.').map(Number);
+if (major < 24 || (major === 24 && minor < 11)) {
+  process.stderr.write('Node >= 24.11.1 required (ML-KEM/ML-DSA support).\n');
+  process.exit(1);
+}
 const fs = require('node:fs');
 const { dispatch } = require('./team_app.cjs');
 

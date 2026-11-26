@@ -160,6 +160,19 @@ function saveState(stateDir, state) {
   durableWriteFile(storePath, Buffer.from(serialized, 'utf8'), 0o600);
 }
 
+// Every alert must name the identity, the service(s) and the event.
+function emitAlert(tamperLog, alert, ctx = {}) {
+  const full = {
+    ...alert,
+    identity: alert.identity || alert.actor || 'unknown',
+    services: alert.services || ctx.services || ['track4-adapter'],
+    event: alert.event || ctx.event || 'unknown'
+  };
+  tamperLog.appendRecord('detector', 'alert', full);
+  process.stderr.write(`[SECURITY ALERT] ${full.rule_id} identity=${full.identity} services=${full.services.join(',')} event=${full.event} :: ${full.reason}\n`);
+  return full;
+}
+
 // Live Detection & Automated Response
 function checkLiveRulesAndRespond(state, actor, asset, op, request, stateDir, tamperLog) {
   const now = Date.now();
@@ -208,8 +221,7 @@ function checkLiveRulesAndRespond(state, actor, asset, op, request, stateDir, ta
 
   if (alerts.length > 0) {
     for (const a of alerts) {
-      tamperLog.appendRecord('detector', 'alert', a);
-      process.stderr.write(`[SECURITY ALERT] ${a.rule_id}: ${a.reason}\n`);
+      emitAlert(tamperLog, a, { services: asset ? [asset] : ['track4-adapter'], event: op });
     }
   }
 }
@@ -227,9 +239,8 @@ function recordDenialForActor(state, actor, stateDir, tamperLog) {
       denial_count: list.length,
       reason: `Actor ${actor} accumulated ${list.length} consecutive denials within 60s`
     };
-    tamperLog.appendRecord('detector', 'alert', alertData);
+    emitAlert(tamperLog, alertData, { event: 'repeated_denied_access' });
     const isLockoutEnabled = process.env.TRACK4_LIVE_LOCKOUT === '1';
-    process.stderr.write(`[SECURITY ALERT] RULE_REPEATED_DENIALS: Actor ${actor} accumulated ${list.length} consecutive denials${isLockoutEnabled ? ' (locked out for 30s)' : ' (alert only)'}\n`);
     if (isLockoutEnabled) {
       state.lockouts.set(actor, now + 30000); // 30s automated lockout response
     }
@@ -529,8 +540,7 @@ exports.dispatch = async function dispatch(request) {
             actor,
             reason: `Actor ${actor} submitted non-base64 or malformed public key`
           };
-          tamperLog.appendRecord('detector', 'alert', alertData);
-          process.stderr.write(`[SECURITY ALERT] RULE_CORRUPTED_KEY: ${alertData.reason}\n`);
+          emitAlert(tamperLog, alertData, { services: [asset], event: 'protected_read' });
           recordDenialForActor(state, actor, stateDir, tamperLog);
           saveState(stateDir, state);
           return { decision: 'deny' };
@@ -544,8 +554,7 @@ exports.dispatch = async function dispatch(request) {
             actor,
             reason: `Actor ${actor} submitted invalid key length (${rawPk.length} != 1184)`
           };
-          tamperLog.appendRecord('detector', 'alert', alertData);
-          process.stderr.write(`[SECURITY ALERT] RULE_CORRUPTED_KEY: ${alertData.reason}\n`);
+          emitAlert(tamperLog, alertData, { services: [asset], event: 'protected_read' });
           recordDenialForActor(state, actor, stateDir, tamperLog);
           saveState(stateDir, state);
           return { decision: 'deny' };

@@ -1,0 +1,8 @@
+{
+  "name": "ctrl-alt-delulu-track4",
+  "version": "1.0.0",
+  "description": "Track 4: Trust, but verify",
+  "engines": { "node": ">=24.11.1" },
+  "scripts": { "test": "node --test --test-concurrency=1 tests/*.cjs" },
+  "dependencies": {}
+}
