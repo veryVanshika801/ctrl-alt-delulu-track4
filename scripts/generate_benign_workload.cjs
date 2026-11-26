@@ -141,4 +141,8 @@ function main() {
   fs.writeFileSync(path.join(resultsDir, 'benign_evaluation_results.json'), JSON.stringify(report, null, 2), 'utf8');
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { generateBenignEvents };
