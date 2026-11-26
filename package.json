@@ -1,8 +1,15 @@
 {
   "name": "ctrl-alt-delulu-track4",
   "version": "1.0.0",
-  "description": "Track 4: Trust, but verify",
-  "engines": { "node": ">=24.11.1" },
-  "scripts": { "test": "node --test --test-concurrency=1 tests/*.cjs" },
-  "dependencies": {}
+  "description": "Post-quantum security platform for Yugaantar DevForge Track 4",
+  "main": "track4_service.cjs",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 tests/",
+    "start": "node server.cjs",
+    "dev": "node server.cjs",
+    "validate": "python3 ../Track-4-Toolkit/validate.py --entry ./track4_service.cjs"
+  },
+  "keywords": ["post-quantum", "security", "hackathon"],
+  "author": "Team Ctrl+Alt+Delulu",
+  "license": "MIT"
 }
