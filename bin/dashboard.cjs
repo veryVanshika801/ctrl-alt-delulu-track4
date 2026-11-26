@@ -405,7 +405,7 @@ class DashboardSimulationEngine {
     log.appendRecord("system", "checkpoint_sync", { epoch: 2, status: "ok" });
     log.createCheckpoint();
 
-    const password = "correct-horse-battery-staple-pqc";
+    const password = require("node:crypto").randomBytes(16).toString("hex");
     const backupMgr = new BackupManager();
     const backup = backupMgr.createBackup({ epoch: 2, actors: this.actors }, password, 2);
 

@@ -18,7 +18,6 @@ if command -v docker >/dev/null 2>&1; then
         node --test --test-concurrency=1 tests/*.cjs
 else
     echo "[Local Host Test Run]"
-    export PATH="$HOME/.local/node-v24.11.1-darwin-arm64/bin:$PATH"
     export TRACK4_STATE_DIR="$(mktemp -d /tmp/track4-test-XXXXXX)"
     echo "Using temporary TRACK4_STATE_DIR: $TRACK4_STATE_DIR"
     node --test --test-concurrency=1 tests/*.cjs

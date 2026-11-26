@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pqcrypto for interop verification
-RUN pip3 install --no-cache-dir --break-system-packages "pqcrypto>=0.4.0"
+RUN pip3 install --no-cache-dir --break-system-packages "pqcrypto==0.4.0"
 
 WORKDIR /workspace
 
