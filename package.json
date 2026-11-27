@@ -4,12 +4,16 @@
   "description": "Post-quantum security platform for Yugaantar DevForge Track 4",
   "main": "track4_service.cjs",
   "scripts": {
-    "test": "node --test --test-concurrency=1 tests/",
+    "test": "node --test --test-concurrency=1 tests/*.cjs",
     "start": "node server.cjs",
     "dev": "node server.cjs",
     "validate": "python3 ../Track-4-Toolkit/validate.py --entry ./track4_service.cjs"
   },
-  "keywords": ["post-quantum", "security", "hackathon"],
+  "keywords": [
+    "post-quantum",
+    "security",
+    "hackathon"
+  ],
   "author": "Team Ctrl+Alt+Delulu",
   "license": "MIT"
 }
