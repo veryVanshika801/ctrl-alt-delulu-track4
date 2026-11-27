@@ -5,28 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ctrl+Alt+Delulu | Zero Trust Security Platform</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            cream: '#f5f3ee',
-            'cream-dark': '#ebe7df',
-            brand: '#1e293b',
-            'brand-light': '#334155',
-            gold: '#b8956a',
-            'gold-light': '#d4b896',
-            mint: '#d4e8dc',
-            'mint-dark': '#7fb894',
-          }
+          fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: { cream: '#f5f3ee', brand: '#1e293b', gold: '#b8956a', mint: '#d4e8dc', 'mint-dark': '#7fb894' }
         }
       }
     }
@@ -34,706 +20,185 @@
   <style>
     body { font-family: 'Inter', sans-serif; background: #f5f3ee; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
-    .sidebar-link { transition: all 0.15s ease; }
-    .sidebar-link:hover { background: rgba(255,255,255,0.08); }
     .sidebar-link.active { background: #b8956a; color: #1e293b; font-weight: 600; }
     .sidebar-link.active i { color: #1e293b; }
     .fade-in { animation: fadeIn 0.3s ease-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .pulse-dot { animation: pulseDot 2s infinite; }
     @keyframes pulseDot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    input:focus { outline: none; border-color: #b8956a !important; box-shadow: 0 0 0 3px rgba(184, 149, 106, 0.15); }
-    .table-row:hover { background: #faf8f4; }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #d1c9b8; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #b8956a; }
   </style>
 </head>
 <body class="bg-cream text-brand antialiased">
 
-  <!-- ==================== LOGIN VIEW ==================== -->
+  <!-- LOGIN VIEW -->
   <div id="login-view" class="min-h-screen flex flex-col">
-    <!-- Top Nav -->
     <nav class="flex items-center justify-between px-8 py-5 border-b border-stone-200/60">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-brand flex items-center justify-center">
-          <i data-lucide="shield-check" class="w-5 h-5 text-gold"></i>
-        </div>
+        <div class="w-10 h-10 rounded-lg bg-brand flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5 text-gold"></i></div>
         <span class="text-sm font-bold tracking-wider">CTRL+ALT+DELULU</span>
       </div>
-      <div class="flex items-center gap-2 text-xs font-mono text-stone-500">
-        <span class="w-2 h-2 rounded-full bg-mint-dark pulse-dot"></span>
-        SECURE ENVIRONMENT
-      </div>
+      <div class="flex items-center gap-2 text-xs font-mono text-stone-500"><span class="w-2 h-2 rounded-full bg-mint-dark pulse-dot"></span> SECURE ENVIRONMENT</div>
     </nav>
-
-    <!-- Main Login Content -->
     <div class="flex-1 flex items-center px-8 lg:px-20 py-12">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full max-w-7xl mx-auto items-center">
-
-        <!-- Left: Hero -->
         <div class="space-y-8">
           <div>
             <p class="text-xs font-bold tracking-[0.2em] text-gold mb-4">IDENTITY & ACCESS MANAGEMENT</p>
-            <h1 class="text-5xl lg:text-6xl font-bold leading-[1.05] text-brand">
-              Your security.<br>Your control.
-            </h1>
-            <p class="mt-6 text-stone-600 max-w-md leading-relaxed">
-              A unified space to manage identities, protect devices and monitor access across your secure environment.
-            </p>
+            <h1 class="text-5xl lg:text-6xl font-bold leading-[1.05] text-brand">Your security.<br>Your control.</h1>
+            <p class="mt-6 text-stone-600 max-w-md leading-relaxed">A unified space to manage identities, protect devices and monitor access across your secure environment.</p>
           </div>
-
-          <!-- Shield Graphic -->
           <div class="flex justify-center lg:justify-start">
             <div class="relative">
               <div class="absolute inset-0 rounded-full border border-stone-200 scale-150"></div>
               <div class="absolute inset-0 rounded-full border border-stone-200/60 scale-125"></div>
-              <div class="w-32 h-32 rounded-3xl bg-brand flex items-center justify-center shadow-xl">
-                <i data-lucide="shield-check" class="w-16 h-16 text-gold"></i>
-              </div>
+              <div class="w-32 h-32 rounded-3xl bg-brand flex items-center justify-center shadow-xl"><i data-lucide="shield-check" class="w-16 h-16 text-gold"></i></div>
             </div>
           </div>
-
-          <div class="flex items-center gap-2 text-xs font-mono text-stone-500">
-            <i data-lucide="activity" class="w-4 h-4"></i>
-            ZERO TRUST ARCHITECTURE
-          </div>
-
-          <p class="text-[10px] font-mono tracking-widest text-stone-400 uppercase">Post-Quantum Security Platform</p>
+          <div class="flex items-center gap-2 text-xs font-mono text-stone-500"><i data-lucide="activity" class="w-4 h-4"></i> ZERO TRUST ARCHITECTURE</div>
         </div>
-
-        <!-- Right: Login Card -->
         <div class="flex justify-center lg:justify-end">
           <div class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-stone-200/60 p-10">
-            <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center mb-6">
-              <i data-lucide="lock" class="w-5 h-5 text-gold"></i>
-            </div>
-
+            <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center mb-6"><i data-lucide="lock" class="w-5 h-5 text-gold"></i></div>
             <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">WELCOME BACK</p>
             <h2 class="text-2xl font-bold text-brand mb-2">Sign in to your account</h2>
             <p class="text-sm text-stone-500 mb-8">Enter your credentials to access your security dashboard.</p>
-
             <form id="login-form" class="space-y-5">
-              <div>
-                <label class="block text-xs font-semibold text-brand mb-2">Username</label>
-                <input type="text" id="login-username" placeholder="Enter your username"
-                  class="w-full px-4 py-3 rounded-lg border border-stone-200 bg-cream/50 text-sm placeholder-stone-400 transition-all" />
-              </div>
-
-              <div>
-                <label class="block text-xs font-semibold text-brand mb-2">Password</label>
-                <div class="relative">
-                  <input type="password" id="login-password" placeholder="Enter your password"
-                    class="w-full px-4 py-3 rounded-lg border border-stone-200 bg-cream/50 text-sm placeholder-stone-400 transition-all pr-10" />
-                  <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-brand">
-                    <i data-lucide="eye" class="w-4 h-4"></i>
-                  </button>
-                </div>
-              </div>
-
-              <button type="submit" class="w-full bg-brand hover:bg-brand-light text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2 group">
-                Sign in
-                <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
-              </button>
+              <div><label class="block text-xs font-semibold text-brand mb-2">Username</label><input type="text" id="login-username" class="w-full px-4 py-3 rounded-lg border border-stone-200 bg-cream/50 text-sm" placeholder="admin" required /></div>
+              <div><label class="block text-xs font-semibold text-brand mb-2">Password</label><input type="password" id="login-password" class="w-full px-4 py-3 rounded-lg border border-stone-200 bg-cream/50 text-sm" placeholder="••••••••" required /></div>
+              <button type="submit" class="w-full bg-brand hover:bg-brand-light text-white font-semibold py-3 rounded-lg transition-all flex items-center justify-center gap-2">Sign in <i data-lucide="arrow-up-right" class="w-4 h-4"></i></button>
             </form>
-
-            <p class="text-center text-xs text-stone-500 mt-6">
-              New to CTRL+ALT+DELULU? <a href="#" class="text-brand font-semibold hover:underline">Create account</a>
-            </p>
-
-            <div class="mt-6 pt-6 border-t border-stone-100 flex items-center gap-2 text-xs text-stone-500">
-              <i data-lucide="shield" class="w-3.5 h-3.5"></i>
-              Your data stays in your local environment.
-            </div>
+            <div class="mt-6 pt-6 border-t border-stone-100 flex items-center gap-2 text-xs text-stone-500"><i data-lucide="shield" class="w-3.5 h-3.5"></i> Your data stays in your local environment.</div>
           </div>
         </div>
       </div>
     </div>
-
-    <footer class="text-center py-6 text-[10px] font-mono tracking-widest text-stone-400 uppercase">
-      © 2026 CTRL+ALT+DELULU · ALL RIGHTS RESERVED
-    </footer>
   </div>
 
-  <!-- ==================== DASHBOARD VIEW ==================== -->
+  <!-- DASHBOARD VIEW -->
   <div id="dashboard-view" class="hidden min-h-screen flex">
-    <!-- Sidebar -->
     <aside class="w-64 bg-brand text-stone-300 flex flex-col shrink-0">
-      <!-- Logo -->
-      <div class="px-6 py-5 border-b border-white/10 flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-          <i data-lucide="shield-check" class="w-4 h-4 text-gold"></i>
-        </div>
-        <span class="text-sm font-bold tracking-wider text-white">CTRL+ALT+DELULU</span>
-      </div>
-
-      <!-- Nav Sections -->
+      <div class="px-6 py-5 border-b border-white/10 flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center"><i data-lucide="shield-check" class="w-4 h-4 text-gold"></i></div><span class="text-sm font-bold tracking-wider text-white">CTRL+ALT+DELULU</span></div>
       <nav class="flex-1 px-3 py-6 space-y-6 overflow-y-auto">
-        <div>
-          <p class="px-3 text-[10px] font-bold tracking-widest text-stone-500 mb-2">WORKSPACE</p>
-          <a href="#" data-page="overview" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview
-          </a>
-          <a href="#" data-page="dashboard" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="gauge" class="w-4 h-4"></i> Dashboard
-          </a>
-        </div>
-
-        <div>
-          <p class="px-3 text-[10px] font-bold tracking-widest text-stone-500 mb-2">IDENTITY & ACCESS</p>
-          <a href="#" data-page="users" class="sidebar-link active flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="users" class="w-4 h-4"></i> Users
-          </a>
-          <a href="#" data-page="devices" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="smartphone" class="w-4 h-4"></i> Devices
-          </a>
-          <a href="#" data-page="permissions" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="key" class="w-4 h-4"></i> Permissions
-          </a>
-          <a href="#" data-page="sessions" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="radio" class="w-4 h-4"></i> Sessions
-          </a>
-        </div>
-
-        <div>
-          <p class="px-3 text-[10px] font-bold tracking-widest text-stone-500 mb-2">SECURITY</p>
-          <a href="#" data-page="keys" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="lock-keyhole" class="w-4 h-4"></i> Key Management
-          </a>
-          <a href="#" data-page="audit" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="scroll-text" class="w-4 h-4"></i> Audit Logs
-          </a>
-          <a href="#" data-page="threats" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="shield-alert" class="w-4 h-4"></i> Threat Detection
-          </a>
-        </div>
-
-        <div>
-          <p class="px-3 text-[10px] font-bold tracking-widest text-stone-500 mb-2">PREFERENCES</p>
-          <a href="#" data-page="profile" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="user" class="w-4 h-4"></i> My Profile
-          </a>
-          <a href="#" data-page="settings" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
-            <i data-lucide="settings" class="w-4 h-4"></i> Settings
-          </a>
-        </div>
+        <div><p class="px-3 text-[10px] font-bold tracking-widest text-stone-500 mb-2">WORKSPACE</p><a href="#" data-page="overview" class="sidebar-link active flex items-center gap-3 px-3 py-2 rounded-lg text-sm"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview</a></div>
+        <div><p class="px-3 text-[10px] font-bold tracking-widest text-stone-500 mb-2">IDENTITY & ACCESS</p><a href="#" data-page="users" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm"><i data-lucide="users" class="w-4 h-4"></i> Users</a><a href="#" data-page="devices" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm"><i data-lucide="smartphone" class="w-4 h-4"></i> Devices</a></div>
+        <div><p class="px-3 text-[10px] font-bold tracking-widest text-stone-500 mb-2">SECURITY</p><a href="#" data-page="audit" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm"><i data-lucide="scroll-text" class="w-4 h-4"></i> Audit Logs</a><a href="#" data-page="threats" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm"><i data-lucide="shield-alert" class="w-4 h-4"></i> Threat Detection</a></div>
       </nav>
-
-      <!-- Bottom -->
-      <div class="px-6 py-4 border-t border-white/10 space-y-3">
-        <div class="flex items-center gap-2 text-xs">
-          <span class="w-2 h-2 rounded-full bg-mint-dark pulse-dot"></span>
-          <span class="text-stone-400">Local environment</span>
-        </div>
-        <button id="logout-btn" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm hover:bg-white/5 transition-colors w-full">
-          <i data-lucide="log-out" class="w-4 h-4"></i> Sign out
-        </button>
-      </div>
+      <div class="px-6 py-4 border-t border-white/10 space-y-3"><div class="flex items-center gap-2 text-xs"><span class="w-2 h-2 rounded-full bg-mint-dark pulse-dot"></span><span class="text-stone-400">Local environment</span></div><button id="logout-btn" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm hover:bg-white/5 transition-colors w-full"><i data-lucide="log-out" class="w-4 h-4"></i> Sign out</button></div>
     </aside>
-
-    <!-- Main Content -->
     <div class="flex-1 flex flex-col min-w-0">
-      <!-- Top Bar -->
       <header class="bg-white border-b border-stone-200/60 px-8 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2 text-sm text-stone-500">
-          <span>Workspace</span>
-          <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-          <span id="breadcrumb-page" class="text-brand font-semibold">Users</span>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <button class="p-2 hover:bg-cream rounded-lg transition-colors">
-            <i data-lucide="refresh-cw" class="w-4 h-4 text-stone-500"></i>
-          </button>
-          <div class="flex items-center gap-3 pl-4 border-l border-stone-200">
-            <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center">
-              <span id="user-avatar" class="text-sm font-bold text-gold">U</span>
-            </div>
-            <span id="user-display" class="text-sm font-semibold text-brand">user</span>
-            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-stone-400"></i>
-          </div>
-        </div>
+        <div class="flex items-center gap-2 text-sm text-stone-500"><span>Workspace</span><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i><span id="breadcrumb-page" class="text-brand font-semibold">Overview</span></div>
+        <div class="flex items-center gap-4"><div class="flex items-center gap-3 pl-4 border-l border-stone-200"><div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center"><span id="user-avatar" class="text-sm font-bold text-gold">A</span></div><span id="user-display" class="text-sm font-semibold text-brand">admin</span></div></div>
       </header>
-
-      <!-- Page Content -->
-      <main class="flex-1 p-8 overflow-y-auto">
-        <div id="page-content" class="fade-in max-w-7xl mx-auto"></div>
-      </main>
-
-      <!-- Footer -->
-      <footer class="bg-white border-t border-stone-200/60 px-8 py-4 flex items-center justify-between text-[10px] font-mono tracking-widest text-stone-400 uppercase">
-        <span>Ctrl+Alt+Delulu · Local Zero Trust Security Platform</span>
-        <span>Offline-Ready Build · 129 Tests Passing</span>
-      </footer>
+      <main class="flex-1 p-8 overflow-y-auto"><div id="page-content" class="fade-in max-w-7xl mx-auto"></div></main>
+      <footer class="bg-white border-t border-stone-200/60 px-8 py-4 flex items-center justify-between text-[10px] font-mono tracking-widest text-stone-400 uppercase"><span>Ctrl+Alt+Delulu · Local Zero Trust Security Platform</span><span>Offline-Ready Build · 129 Tests Passing</span></footer>
     </div>
   </div>
 
   <script>
-    // ==================== STATE ====================
+    // MOCK DATA
     const state = {
-      currentUser: null,
-      users: [
-        { id: 1, username: 'vanshika_test', role: 'user', status: 'active', created: '2026-11-26 15:51:50' },
-        { id: 2, username: 'Vanshika', role: 'user', status: 'active', created: '2026-11-26 17:24:47' },
-        { id: 3, username: 'vanshika', role: 'admin', status: 'active', created: '2026-11-26 17:27:15' },
-        { id: 4, username: 'myra', role: 'user', status: 'active', created: '2026-11-26 18:22:10' },
-        { id: 5, username: 'Preeti', role: 'user', status: 'active', created: '2026-11-26 18:26:37' },
-        { id: 6, username: 'dimple', role: 'user', status: 'active', created: '2026-11-26 18:34:02' },
-        { id: 7, username: 'dimplee', role: 'user', status: 'active', created: '2026-11-26 18:44:46' },
+      users: [ { id: 1, username: 'admin', role: 'admin', status: 'active', created: '2026-11-27 10:00:00' }, { id: 2, username: 'alice', role: 'user', status: 'active', created: '2026-11-27 10:05:00' }, { id: 3, username: 'bob', role: 'user', status: 'active', created: '2026-11-27 10:10:00' } ],
+      devices: [ 
+        { id: 1, name: 'Admin MacBook Pro', owner: 'admin', status: 'active', enrolled: '2026-11-27 10:00:00' }, 
+        { id: 2, name: 'Alice iPhone 15', owner: 'alice', status: 'active', enrolled: '2026-11-27 10:05:00' },
+        { id: 3, name: 'Bob ThinkPad X1', owner: 'bob', status: 'revoked', enrolled: '2026-11-26 09:00:00' }
       ],
-      auditLog: [
-        { timestamp: '2026-11-27 10:42:18', command: 'setup', actor: 'admin', status: 'success', hash: 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2' },
-        { timestamp: '2026-11-27 10:42:25', command: 'read', actor: 'alice', asset_id: 'doc_001', status: 'success', hash: 'b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3' },
-        { timestamp: '2026-11-27 10:42:31', command: 'read', actor: 'bob', asset_id: 'doc_002', status: 'deny', hash: 'c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4' },
-        { timestamp: '2026-11-27 10:42:44', command: 'revoke', actor: 'admin', device_id: 'dev_x99', status: 'success', hash: 'd4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5' },
-        { timestamp: '2026-11-27 10:43:02', command: 'protected_read', actor: 'charlie', status: 'success', hash: 'e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6' },
-        { timestamp: '2026-11-27 10:43:18', command: 'audit', actor: 'system', action: 'verify', status: 'valid', hash: 'f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7' },
-      ],
-      alerts: [
+      auditLog: [ { timestamp: '2026-11-27 10:42:18', command: 'setup', actor: 'admin', status: 'success', hash: 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2' }, { timestamp: '2026-11-27 10:42:25', command: 'read', actor: 'alice', asset_id: 'doc_001', status: 'success', hash: 'b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3' } ],
+      alerts: [ 
         { severity: 'HIGH', rule: 'LATERAL_MOVEMENT', identity: 'svc-payroll', path: 'portal → vault → hr-db', time: '2m ago' },
-        { severity: 'MEDIUM', rule: 'PRIVILEGE_ESCALATION', identity: 'user_jdoe', path: 'login → admin-panel', time: '8m ago' },
-      ],
-      devices: [
-        { id: 1, name: 'Alice MacBook Pro', owner: 'alice', status: 'active', enrolled: '2026-11-20 09:15:22' },
-        { id: 2, name: 'Bob iPhone 15', owner: 'bob', status: 'active', enrolled: '2026-11-21 14:30:11' },
-        { id: 3, name: 'Charlie ThinkPad', owner: 'charlie', status: 'revoked', enrolled: '2026-11-18 11:45:00' },
-        { id: 4, name: 'Admin Workstation', owner: 'admin', status: 'active', enrolled: '2026-11-15 08:00:00' },
-      ],
+        { severity: 'MEDIUM', rule: 'PRIVILEGE_ESCALATION', identity: 'user_jdoe', path: 'login → admin-panel', time: '8m ago' }
+      ]
     };
 
-    // ==================== LOGIN LOGIC ====================
-    const loginForm = document.getElementById('login-form');
-    const togglePassword = document.getElementById('toggle-password');
-
-    togglePassword.addEventListener('click', () => {
-      const pwd = document.getElementById('login-password');
-      const icon = togglePassword.querySelector('i');
-      if (pwd.type === 'password') {
-        pwd.type = 'text';
-        icon.setAttribute('data-lucide', 'eye-off');
-      } else {
-        pwd.type = 'password';
-        icon.setAttribute('data-lucide', 'eye');
-      }
-      lucide.createIcons();
-    });
-
-    loginForm.addEventListener('submit', (e) => {
+    document.getElementById('login-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      const username = document.getElementById('login-username').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-
-      if (!username || !password) {
-        alert('Please enter both username and password');
-        return;
-      }
-
-      state.currentUser = username;
-      document.getElementById('user-display').textContent = username;
-      document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
-
+      const user = document.getElementById('login-username').value || 'admin';
+      document.getElementById('user-display').textContent = user;
+      document.getElementById('user-avatar').textContent = user.charAt(0).toUpperCase();
       document.getElementById('login-view').classList.add('hidden');
       document.getElementById('dashboard-view').classList.remove('hidden');
       document.getElementById('dashboard-view').classList.add('flex');
-
-      renderPage('users');
+      renderPage('overview');
       lucide.createIcons();
     });
 
     document.getElementById('logout-btn').addEventListener('click', () => {
-      state.currentUser = null;
       document.getElementById('dashboard-view').classList.add('hidden');
-      document.getElementById('dashboard-view').classList.remove('flex');
       document.getElementById('login-view').classList.remove('hidden');
-      document.getElementById('login-username').value = '';
-      document.getElementById('login-password').value = '';
     });
 
-    // ==================== SIDEBAR NAV ====================
     document.querySelectorAll('.sidebar-link').forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
         link.classList.add('active');
-        const page = link.dataset.page;
-        renderPage(page);
+        renderPage(link.dataset.page);
       });
     });
 
-    // ==================== PAGE RENDERERS ====================
     function renderPage(page) {
       const content = document.getElementById('page-content');
-      const breadcrumb = document.getElementById('breadcrumb-page');
-      breadcrumb.textContent = page.charAt(0).toUpperCase() + page.slice(1);
-
-      const pages = {
-        overview: renderOverview,
-        dashboard: renderDashboard,
-        users: renderUsers,
-        devices: renderDevices,
-        permissions: renderPermissions,
-        sessions: renderSessions,
-        keys: renderKeys,
-        audit: renderAudit,
-        threats: renderThreats,
-        profile: renderProfile,
-        settings: renderSettings,
-      };
-
-      content.innerHTML = (pages[page] || renderOverview)();
-      content.classList.remove('fade-in');
-      void content.offsetWidth;
-      content.classList.add('fade-in');
-      lucide.createIcons();
-    }
-
-    function renderOverview() {
-      return `
-        <div class="mb-8">
-          <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY WORKSPACE</p>
-          <h1 class="text-3xl font-bold text-brand">Overview</h1>
-          <p class="text-stone-500 mt-1">Your security posture at a glance.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          ${statCard('Total Users', state.users.length, 'users', 'gold')}
-          ${statCard('Active Devices', state.devices.filter(d=>d.status==='active').length, 'smartphone', 'mint-dark')}
-          ${statCard('Audit Entries', state.auditLog.length, 'scroll-text', 'brand')}
-          ${statCard('Threat Alerts', state.alerts.length, 'shield-alert', 'red-500')}
-        </div>
-        <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-          <h3 class="font-semibold text-brand mb-4">Recent Activity</h3>
-          <div class="space-y-3">
-            ${state.auditLog.slice(0,5).map(a => `
-              <div class="flex items-center justify-between py-2 border-b border-stone-100 last:border-0">
-                <div class="flex items-center gap-3">
-                  <span class="w-2 h-2 rounded-full ${a.status==='success'||a.status==='valid'?'bg-mint-dark':'bg-red-400'}"></span>
-                  <span class="font-mono text-sm text-brand">${a.command}</span>
-                  <span class="text-sm text-stone-500">by ${a.actor}</span>
-                </div>
-                <span class="text-xs font-mono text-stone-400">${a.timestamp}</span>
-              </div>
-            `).join('')}
+      document.getElementById('breadcrumb-page').textContent = page.charAt(0).toUpperCase() + page.slice(1);
+      
+      if (page === 'overview') {
+        content.innerHTML = `
+          <div class="mb-8"><p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY WORKSPACE</p><h1 class="text-3xl font-bold text-brand">Overview</h1></div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white rounded-xl border border-stone-200/60 p-5"><span class="text-xs font-mono text-stone-500 uppercase">Total Users</span><p class="text-3xl font-bold text-brand font-mono mt-2">${state.users.length}</p></div>
+            <div class="bg-white rounded-xl border border-stone-200/60 p-5"><span class="text-xs font-mono text-stone-500 uppercase">Active Devices</span><p class="text-3xl font-bold text-brand font-mono mt-2">${state.devices.filter(d=>d.status==='active').length}</p></div>
+            <div class="bg-white rounded-xl border border-stone-200/60 p-5"><span class="text-xs font-mono text-stone-500 uppercase">Audit Entries</span><p class="text-3xl font-bold text-brand font-mono mt-2">${state.auditLog.length}</p></div>
           </div>
-        </div>
-      `;
-    }
-
-    function renderDashboard() {
-      return `
-        <div class="mb-8">
-          <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY WORKSPACE</p>
-          <h1 class="text-3xl font-bold text-brand">Dashboard</h1>
-          <p class="text-stone-500 mt-1">Real-time security metrics.</p>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 bg-white rounded-xl border border-stone-200/60 p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="font-semibold text-brand">Audit Log Stream</h3>
-              <span class="flex items-center gap-2 text-xs font-mono text-mint-dark">
-                <span class="w-2 h-2 rounded-full bg-mint-dark pulse-dot"></span> LIVE
-              </span>
-            </div>
-            <div class="space-y-2 font-mono text-xs">
-              ${state.auditLog.map(a => `
-                <div class="flex items-center gap-3 py-2 border-b border-stone-100">
-                  <span class="text-stone-400 w-32">${a.timestamp.split(' ')[1]}</span>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.status==='success'||a.status==='valid'?'bg-mint text-mint-dark':'bg-red-50 text-red-500'}">${a.status.toUpperCase()}</span>
-                  <span class="text-brand w-20">${a.actor}</span>
-                  <span class="text-stone-600 flex-1">${a.command}${a.asset_id?' '+a.asset_id:''}${a.device_id?' '+a.device_id:''}</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-          <div class="space-y-6">
-            <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-              <h3 class="font-semibold text-brand mb-4 flex items-center gap-2">
-                <i data-lucide="shield-alert" class="w-4 h-4 text-amber-500"></i> Active Threats
-              </h3>
-              <div class="space-y-3">
-                ${state.alerts.map(a => `
-                  <div class="p-3 rounded-lg border border-stone-200">
-                    <div class="flex items-center justify-between mb-1">
-                      <span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.severity==='HIGH'?'bg-red-50 text-red-500':'bg-amber-50 text-amber-600'}">${a.severity}</span>
-                      <span class="text-[10px] font-mono text-stone-400">${a.time}</span>
-                    </div>
-                    <p class="text-xs font-mono text-brand font-semibold">${a.rule}</p>
-                    <p class="text-[11px] font-mono text-gold mt-1">${a.identity}</p>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-            <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-              <h3 class="font-semibold text-brand mb-4 flex items-center gap-2">
-                <i data-lucide="lock-keyhole" class="w-4 h-4 text-gold"></i> Crypto Status
-              </h3>
-              <div class="space-y-3 text-sm">
-                ${[['ML-KEM-768','FIPS 203 ✓'],['ML-DSA-65','FIPS 204 ✓'],['AES-256-GCM','Envelope ✓'],['Hash Chain','INTACT']].map(([k,v])=>`
-                  <div class="flex items-center justify-between">
-                    <span class="text-stone-500 text-xs font-mono">${k}</span>
-                    <span class="text-xs font-mono text-mint-dark font-semibold">${v}</span>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderUsers() {
-      return `
-        <div class="mb-8 flex items-start justify-between">
-          <div>
-            <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY WORKSPACE</p>
-            <h1 class="text-3xl font-bold text-brand">Users</h1>
-            <p class="text-stone-500 mt-1">Create and review identities in your environment.</p>
-          </div>
-          <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-mint text-xs font-mono text-mint-dark font-semibold">
-            <span class="w-2 h-2 rounded-full bg-mint-dark pulse-dot"></span> SYSTEM ONLINE
-          </div>
-        </div>
-
-        <!-- Register New User -->
-        <div class="bg-white rounded-xl border border-stone-200/60 p-6 mb-6">
-          <div class="flex items-center justify-between mb-5">
-            <div>
-              <h3 class="font-semibold text-brand">Register new user</h3>
-              <p class="text-xs text-stone-500 mt-0.5">Create a local identity</p>
-            </div>
-            <i data-lucide="users" class="w-5 h-5 text-gold"></i>
-          </div>
-          <form id="add-user-form" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div>
-              <label class="block text-xs font-semibold text-brand mb-2">Username</label>
-              <input type="text" id="new-username" class="w-full px-3 py-2.5 rounded-lg border border-stone-200 bg-cream/50 text-sm" placeholder="Enter username" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-brand mb-2">Password</label>
-              <input type="password" id="new-password" class="w-full px-3 py-2.5 rounded-lg border border-stone-200 bg-cream/50 text-sm" placeholder="Enter password" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-brand mb-2">Role</label>
-              <select id="new-role" class="w-full px-3 py-2.5 rounded-lg border border-stone-200 bg-cream/50 text-sm">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            <button type="submit" class="bg-brand hover:bg-brand-light text-white font-semibold py-2.5 rounded-lg transition-colors text-sm flex items-center justify-center gap-2">
-              Add user
-            </button>
-          </form>
-        </div>
-
-        <!-- Registered Users Table -->
-        <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-          <div class="flex items-center justify-between mb-5">
-            <div>
-              <h3 class="font-semibold text-brand">Registered users</h3>
-              <p class="text-xs text-stone-500 mt-0.5">${state.users.length} identities in the local database</p>
-            </div>
-            <i data-lucide="users" class="w-5 h-5 text-gold"></i>
-          </div>
-          <div class="overflow-x-auto">
+          <div class="bg-white rounded-xl border border-stone-200/60 p-6"><h3 class="font-semibold text-brand mb-4">Recent Activity</h3><div class="space-y-3">${state.auditLog.map(a => `<div class="flex items-center justify-between py-2 border-b border-stone-100 last:border-0"><div class="flex items-center gap-3"><span class="w-2 h-2 rounded-full ${a.status==='success'?'bg-mint-dark':'bg-red-400'}"></span><span class="font-mono text-sm text-brand">${a.command}</span><span class="text-sm text-stone-500">by ${a.actor}</span></div><span class="text-xs font-mono text-stone-400">${a.timestamp}</span></div>`).join('')}</div></div>
+        `;
+      } else if (page === 'users') {
+        content.innerHTML = `
+          <div class="mb-8"><p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">IDENTITY & ACCESS</p><h1 class="text-3xl font-bold text-brand">Users</h1><p class="text-stone-500 mt-1">Registered identities in the local database.</p></div>
+          <div class="bg-white rounded-xl border border-stone-200/60 p-6"><table class="w-full"><thead><tr class="border-b border-stone-200 text-xs font-semibold text-stone-500 uppercase tracking-wider"><th class="text-left py-3 px-4">ID</th><th class="text-left py-3 px-4">Username</th><th class="text-left py-3 px-4">Role</th><th class="text-left py-3 px-4">Status</th><th class="text-left py-3 px-4">Created</th></tr></thead><tbody>${state.users.map(u => `<tr class="border-b border-stone-100 last:border-0"><td class="py-3 px-4 text-sm font-mono text-stone-500">${u.id}</td><td class="py-3 px-4 text-sm font-semibold text-brand">${u.username}</td><td class="py-3 px-4 text-sm text-stone-600">${u.role}</td><td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-mint text-mint-dark">${u.status}</span></td><td class="py-3 px-4 text-sm font-mono text-stone-500">${u.created}</td></tr>`).join('')}</tbody></table></div>
+        `;
+      } else if (page === 'devices') {
+        content.innerHTML = `
+          <div class="mb-8"><p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">IDENTITY & ACCESS</p><h1 class="text-3xl font-bold text-brand">Devices</h1><p class="text-stone-500 mt-1">Manage enrolled devices and revocations.</p></div>
+          <div class="bg-white rounded-xl border border-stone-200/60 p-6">
             <table class="w-full">
-              <thead>
-                <tr class="border-b border-stone-200 text-xs font-semibold text-stone-500 uppercase tracking-wider">
-                  <th class="text-left py-3 px-4">ID</th>
-                  <th class="text-left py-3 px-4">Username</th>
-                  <th class="text-left py-3 px-4">Role</th>
-                  <th class="text-left py-3 px-4">Status</th>
-                  <th class="text-left py-3 px-4">Created</th>
-                </tr>
-              </thead>
-              <tbody id="users-tbody">
-                ${state.users.map(u => `
-                  <tr class="table-row border-b border-stone-100 last:border-0 transition-colors">
-                    <td class="py-3 px-4 text-sm font-mono text-stone-500">${u.id}</td>
-                    <td class="py-3 px-4 text-sm font-semibold text-brand">${u.username}</td>
-                    <td class="py-3 px-4 text-sm text-stone-600">${u.role}</td>
-                    <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-mint text-mint-dark">${u.status}</span></td>
-                    <td class="py-3 px-4 text-sm font-mono text-stone-500">${u.created}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
+              <thead><tr class="border-b border-stone-200 text-xs font-semibold text-stone-500 uppercase tracking-wider"><th class="text-left py-3 px-4">ID</th><th class="text-left py-3 px-4">Device Name</th><th class="text-left py-3 px-4">Owner</th><th class="text-left py-3 px-4">Status</th><th class="text-left py-3 px-4">Enrolled</th></tr></thead>
+              <tbody>${state.devices.map(d => `<tr class="border-b border-stone-100 last:border-0"><td class="py-3 px-4 text-sm font-mono text-stone-500">${d.id}</td><td class="py-3 px-4 text-sm font-semibold text-brand">${d.name}</td><td class="py-3 px-4 text-sm text-stone-600">${d.owner}</td><td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${d.status==='active'?'bg-mint text-mint-dark':'bg-red-50 text-red-500'}">${d.status}</span></td><td class="py-3 px-4 text-sm font-mono text-stone-500">${d.enrolled}</td></tr>`).join('')}</tbody>
             </table>
           </div>
-        </div>
-      `;
-    }
-
-    function renderDevices() {
-      return `
-        <div class="mb-8">
-          <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">IDENTITY & ACCESS</p>
-          <h1 class="text-3xl font-bold text-brand">Devices</h1>
-          <p class="text-stone-500 mt-1">Manage enrolled devices and revocations.</p>
-        </div>
-        <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-          <table class="w-full">
-            <thead>
-              <tr class="border-b border-stone-200 text-xs font-semibold text-stone-500 uppercase tracking-wider">
-                <th class="text-left py-3 px-4">ID</th>
-                <th class="text-left py-3 px-4">Device Name</th>
-                <th class="text-left py-3 px-4">Owner</th>
-                <th class="text-left py-3 px-4">Status</th>
-                <th class="text-left py-3 px-4">Enrolled</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${state.devices.map(d => `
-                <tr class="table-row border-b border-stone-100 last:border-0">
-                  <td class="py-3 px-4 text-sm font-mono text-stone-500">${d.id}</td>
-                  <td class="py-3 px-4 text-sm font-semibold text-brand">${d.name}</td>
-                  <td class="py-3 px-4 text-sm text-stone-600">${d.owner}</td>
-                  <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${d.status==='active'?'bg-mint text-mint-dark':'bg-red-50 text-red-500'}">${d.status}</span></td>
-                  <td class="py-3 px-4 text-sm font-mono text-stone-500">${d.enrolled}</td>
-                </tr>
+        `;
+      } else if (page === 'audit') {
+        content.innerHTML = `
+          <div class="mb-8"><p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY</p><h1 class="text-3xl font-bold text-brand">Audit Logs</h1><p class="text-stone-500 mt-1">Tamper-evident, hash-chained audit trail.</p></div>
+          <div class="bg-white rounded-xl border border-stone-200/60 p-6"><div class="space-y-2 font-mono text-xs">${state.auditLog.map(a => `<div class="flex items-center gap-3 py-3 border-b border-stone-100 last:border-0"><span class="text-stone-400 w-32 shrink-0">${a.timestamp}</span><span class="px-2 py-0.5 rounded text-[10px] font-bold shrink-0 ${a.status==='success'?'bg-mint text-mint-dark':'bg-red-50 text-red-500'} w-16 text-center">${a.status.toUpperCase()}</span><span class="text-brand w-20 shrink-0 font-semibold">${a.actor}</span><span class="text-stone-600 flex-1">${a.command} ${a.asset_id||''}</span><span class="text-stone-400 shrink-0 text-[10px]">${a.hash.slice(0,8)}...${a.hash.slice(-8)}</span></div>`).join('')}</div></div>
+        `;
+      } else if (page === 'threats') {
+        content.innerHTML = `
+          <div class="mb-8"><p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY</p><h1 class="text-3xl font-bold text-brand">Threat Detection</h1><p class="text-stone-500 mt-1">Deterministic anomaly and lateral movement detection.</p></div>
+          <div class="bg-white rounded-xl border border-stone-200/60 p-6">
+            <div class="space-y-3">
+              ${state.alerts.map(a => `
+                <div class="p-5 rounded-lg border border-stone-200 hover:border-stone-300 transition-colors">
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                      <span class="px-2.5 py-1 rounded-full text-xs font-bold ${a.severity==='HIGH'?'bg-red-50 text-red-500':'bg-amber-50 text-amber-600'}">${a.severity}</span>
+                      <span class="font-mono font-semibold text-brand">${a.rule}</span>
+                    </div>
+                    <span class="text-xs font-mono text-stone-400">${a.time}</span>
+                  </div>
+                  <div class="flex items-center gap-6 text-sm">
+                    <div><span class="text-xs text-stone-500 block">Identity</span><span class="font-mono text-gold font-semibold">${a.identity}</span></div>
+                    <div class="flex-1"><span class="text-xs text-stone-500 block">Attack Path</span><span class="font-mono text-brand">${a.path}</span></div>
+                  </div>
+                </div>
               `).join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function renderPermissions() {
-      return pagePlaceholder('Permissions', 'IDENTITY & ACCESS', 'Define access policies and resource permissions.');
-    }
-    function renderSessions() {
-      return pagePlaceholder('Sessions', 'IDENTITY & ACCESS', 'Active sessions and authentication tokens.');
-    }
-    function renderKeys() {
-      return `
-        <div class="mb-8">
-          <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY</p>
-          <h1 class="text-3xl font-bold text-brand">Key Management</h1>
-          <p class="text-stone-500 mt-1">Post-quantum key lifecycle and rotation.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          ${[['ML-KEM-768','FIPS 203 · Key Encapsulation','Active','gold'],['ML-DSA-65','FIPS 204 · Digital Signatures','Active','gold'],['AES-256-GCM','Envelope Encryption · 256-bit','Active','mint-dark'],['KEK Master','Scrypt KDF · Version 1','Active','brand']].map(([n,d,s,c])=>`
-            <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-              <div class="flex items-center justify-between mb-3">
-                <h3 class="font-semibold text-brand font-mono">${n}</h3>
-                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-mint text-mint-dark">${s}</span>
-              </div>
-              <p class="text-xs text-stone-500">${d}</p>
             </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    function renderAudit() {
-      return `
-        <div class="mb-8">
-          <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY</p>
-          <h1 class="text-3xl font-bold text-brand">Audit Logs</h1>
-          <p class="text-stone-500 mt-1">Tamper-evident, hash-chained audit trail.</p>
-        </div>
-        <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-          <div class="space-y-2 font-mono text-xs">
-            ${state.auditLog.map((a,i) => `
-              <div class="flex items-center gap-3 py-3 border-b border-stone-100 last:border-0">
-                <span class="text-stone-400 w-32 shrink-0">${a.timestamp}</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold shrink-0 ${a.status==='success'||a.status==='valid'?'bg-mint text-mint-dark':'bg-red-50 text-red-500'} w-16 text-center">${a.status.toUpperCase()}</span>
-                <span class="text-brand w-20 shrink-0 font-semibold">${a.actor}</span>
-                <span class="text-stone-600 flex-1">${a.command}${a.action?':'+a.action:''}${a.asset_id?' '+a.asset_id:''}${a.device_id?' '+a.device_id:''}</span>
-                <span class="text-stone-400 shrink-0 text-[10px]" title="${a.hash}">${a.hash.slice(0,8)}...${a.hash.slice(-8)}</span>
-              </div>
-            `).join('')}
           </div>
-        </div>
-      `;
-    }
-
-    function renderThreats() {
-      return `
-        <div class="mb-8">
-          <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">SECURITY</p>
-          <h1 class="text-3xl font-bold text-brand">Threat Detection</h1>
-          <p class="text-stone-500 mt-1">Deterministic anomaly and lateral movement detection.</p>
-        </div>
-        <div class="bg-white rounded-xl border border-stone-200/60 p-6">
-          <div class="space-y-3">
-            ${state.alerts.map(a => `
-              <div class="p-5 rounded-lg border border-stone-200 hover:border-stone-300 transition-colors">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="flex items-center gap-3">
-                    <span class="px-2.5 py-1 rounded-full text-xs font-bold ${a.severity==='HIGH'?'bg-red-50 text-red-500':'bg-amber-50 text-amber-600'}">${a.severity}</span>
-                    <span class="font-mono font-semibold text-brand">${a.rule}</span>
-                  </div>
-                  <span class="text-xs font-mono text-stone-400">${a.time}</span>
-                </div>
-                <div class="flex items-center gap-6 text-sm">
-                  <div>
-                    <span class="text-xs text-stone-500 block">Identity</span>
-                    <span class="font-mono text-gold font-semibold">${a.identity}</span>
-                  </div>
-                  <div class="flex-1">
-                    <span class="text-xs text-stone-500 block">Attack Path</span>
-                    <span class="font-mono text-brand">${a.path}</span>
-                  </div>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderProfile() {
-      return pagePlaceholder('My Profile', 'PREFERENCES', 'Manage your account preferences.');
-    }
-    function renderSettings() {
-      return pagePlaceholder('Settings', 'PREFERENCES', 'System configuration and preferences.');
-    }
-
-    // ==================== HELPERS ====================
-    function statCard(label, value, icon, color) {
-      return `
-        <div class="bg-white rounded-xl border border-stone-200/60 p-5">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-mono text-stone-500 uppercase tracking-wider">${label}</span>
-            <i data-lucide="${icon}" class="w-4 h-4 text-${color}"></i>
-          </div>
-          <p class="text-3xl font-bold text-brand font-mono">${value}</p>
-        </div>
-      `;
-    }
-
-    function pagePlaceholder(title, section, desc) {
-      return `
-        <div class="mb-8">
-          <p class="text-xs font-bold tracking-[0.2em] text-gold mb-2">${section}</p>
-          <h1 class="text-3xl font-bold text-brand">${title}</h1>
-          <p class="text-stone-500 mt-1">${desc}</p>
-        </div>
-        <div class="bg-white rounded-xl border border-stone-200/60 p-12 text-center">
-          <i data-lucide="construction" class="w-12 h-12 text-stone-300 mx-auto mb-4"></i>
-          <p class="text-stone-500 font-mono text-sm">This module is under active development.</p>
-        </div>
-      `;
-    }
-
-    // ==================== ADD USER FORM ====================
-    document.addEventListener('submit', (e) => {
-      if (e.target.id === 'add-user-form') {
-        e.preventDefault();
-        const username = document.getElementById('new-username').value.trim();
-        const role = document.getElementById('new-role').value;
-        if (!username) return;
-        state.users.push({
-          id: state.users.length + 1,
-          username,
-          role,
-          status: 'active',
-          created: new Date().toISOString().replace('T',' ').slice(0,19),
-        });
-        renderPage('users');
+        `;
+      } else {
+        content.innerHTML = `<div class="bg-white rounded-xl border border-stone-200/60 p-12 text-center"><i data-lucide="construction" class="w-12 h-12 text-stone-300 mx-auto mb-4"></i><p class="text-stone-500 font-mono text-sm">Module under active development.</p></div>`;
       }
-    });
-
-    // Init icons
+      lucide.createIcons();
+    }
     lucide.createIcons();
   </script>
 </body>
