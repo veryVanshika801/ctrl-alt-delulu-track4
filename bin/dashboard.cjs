@@ -895,7 +895,7 @@ const server = http.createServer(async (req, res) => {
   res.end('Not Found');
 });
 
-server.listen(port, '127.0.0.1', () => {
+server.listen(port, '0.0.0.0', () => {
   console.log(`[${BRAND_NAME}] Security Operations Dashboard`);
   console.log(`[${BRAND_NAME}] Subtitle: ${BRAND_SUBTITLE}`);
   console.log(`[${BRAND_NAME}] Running at http://127.0.0.1:${port}`);
